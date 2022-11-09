@@ -1,0 +1,70 @@
+version: '3.3'
+
+services:
+  web:
+    build: ./
+    entrypoint: ./entrypoint.sh
+    volumes:
+      - ./:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    depends_on:
+#      - db, localstack, celery
+      - db
+    stdin_open: true
+    tty: true
+
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=hello_django_dev
+
+# TODO Test all services
+#  localstack:
+#    image: localstack/localstack:latest
+#    ports:
+#      - "4566:4566"            # LocalStack Gateway
+#    environment:
+#      - AWS_DEFAULT_REGION=eu-central-1
+#      - EDGE_PORT=4566
+#      - SERVICES=s3,ses
+#      - DEBUG=1
+#      - DATA_DIR=/tmp/localstack/data
+#      - PERSISTENCE=${PERSISTENCE-}
+#      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+#      - DOCKER_HOST=unix:///var/run/docker.sock
+#    volumes:
+#      - ./localstack_entrypoint.sh:/docker-entrypoint-initaws.d/localstack_entrypoint.sh
+#      - './.localstack:/tmp/localstack'
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+#
+#  rabbitmq:
+#    hostname: rabbit
+#    container_name: "rabbitmq"
+#    image: rabbitmq:3-management
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=admin
+#      - RABBITMQ_DEFAULT_PASS=mypass
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"  # here, we can access rabbitmq management plugin
+#
+#  celery:
+#    build: ./
+#    volumes:
+#      - ./:/usr/src/app/
+#    env_file:
+#      - ./.env
+#    entrypoint: ./celery_entrypoint.sh
+#    depends_on:
+#      - rabbitmq
+#    restart: always
+
+volumes:
+  postgres_data:

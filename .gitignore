@@ -1,0 +1,9 @@
+.idea
+*/.idea
+venv
+*/venv
+#.env
+#*/.env
+db.sqlite3
+*/__pycache__/
+.localstack
