@@ -18,7 +18,7 @@ class Address(models.Model):
     house_number = models.IntegerField()
 
     def __str__(self):
-        return self.city + self.street + str(self.house_number)
+        return self.city + ', ' + self.street + ', ' + str(self.house_number)
 
 
 class Unit(models.Model):
