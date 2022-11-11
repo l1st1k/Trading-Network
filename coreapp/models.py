@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
-from djmoney.models.fields import MoneyField
 from django.db import models
+from djmoney.models.fields import MoneyField
 
 
 class Network(models.Model):
@@ -89,9 +89,15 @@ class Unit(models.Model):
         verbose_name_plural = 'Units'
 
     def clean(self):
+        # Hierarchy validation
         if self.provider and not int(self.unit_type) > int(self.provider.unit_type):
             raise ValidationError("Error in unit_type hierarchy. HINT: You can choose only the higher Unit as provider")
-        potential_matched_type_unit = Unit.objects.filter(network=self.network, unit_type=self.unit_type).first()
+
+        # Single unit_type in network validation
+        potential_matched_type_unit: Unit = Unit.objects.filter(
+            network=self.network,
+            unit_type=self.unit_type
+        ).first()
         if potential_matched_type_unit and potential_matched_type_unit != self:
             raise ValidationError("Error in network structure. HINT: You can't add second unit of this type to this "
                                   "network")
