@@ -91,3 +91,7 @@ class Unit(models.Model):
     def clean(self):
         if self.provider and not int(self.unit_type) > int(self.provider.unit_type):
             raise ValidationError("Error in unit_type hierarchy. HINT: You can choose only the higher Unit as provider")
+        potential_matched_type_unit = Unit.objects.filter(network=self.network, unit_type=self.unit_type).first()
+        if potential_matched_type_unit and potential_matched_type_unit != self:
+            raise ValidationError("Error in network structure. HINT: You can't add second unit of this type to this "
+                                  "network")
