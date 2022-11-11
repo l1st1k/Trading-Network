@@ -24,4 +24,4 @@ To start my application on your device you should:
 4) type in terminal `docker-compose up -d`
 5) open your browser on `http://localhost:8000/admin/`
 6) use admin credentials: username: "root", password: "112233"
-7) also you can check swagger documentation on `http://localhost:8000/swagger/`
+7) also you can check swagger documentation for API on `http://localhost:8000/swagger/`

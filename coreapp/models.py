@@ -3,6 +3,13 @@ from djmoney.models.fields import MoneyField
 from django.db import models
 
 
+class Network(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
     model = models.CharField(max_length=30)
@@ -31,6 +38,11 @@ class Unit(models.Model):
         INDIVIDUAL_ENTREPRENEUR = 4
 
     name = models.CharField(max_length=80, unique=True)
+    network = models.ForeignKey(
+        'coreapp.Network',
+        related_name='unit_network',
+        on_delete=models.CASCADE
+    )
     email = models.EmailField(max_length=50)
     address = models.ForeignKey(
         'coreapp.Address',
@@ -77,5 +89,5 @@ class Unit(models.Model):
         verbose_name_plural = 'Units'
 
     def clean(self):
-        if not int(self.unit_type) > int(self.provider.unit_type):
+        if self.provider and not int(self.unit_type) > int(self.provider.unit_type):
             raise ValidationError("Error in unit_type hierarchy. HINT: You can choose only the higher Unit as provider")

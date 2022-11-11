@@ -6,14 +6,15 @@ from .models import *
 
 def debt_remove(modeladmin, request, queryset):
     queryset.update(debt=0)
+
+
 debt_remove.short_description = 'Remove debt from Units'
 
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'provider_link', 'unit_type', 'debt', 'created_at')
+    list_display = ('name', 'email', 'network', 'provider_link', 'unit_type', 'debt', 'created_at')
     search_fields = ('name', 'email')
-    list_editable = ('unit_type',)
-    list_filter = ('unit_type', 'created_at', 'address__city')
+    list_filter = ('unit_type', 'created_at', 'address__city', 'network')
     actions = (debt_remove,)
 
     def provider_link(self, obj):
@@ -21,6 +22,11 @@ class UnitAdmin(admin.ModelAdmin):
             return mark_safe(f'<a href="/admin/coreapp/unit/{obj.provider.id}/change/">{obj.provider.name}</a>')
 
     provider_link.short_description = 'provider'
+
+
+class NetworkAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -39,3 +45,4 @@ class AddressAdmin(admin.ModelAdmin):
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Address, AddressAdmin)
+admin.site.register(Network, NetworkAdmin)
