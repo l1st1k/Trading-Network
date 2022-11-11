@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from djmoney.models.fields import MoneyField
 from django.db import models
 
@@ -74,3 +75,7 @@ class Unit(models.Model):
     class Meta:
         verbose_name = 'Unit'
         verbose_name_plural = 'Units'
+
+    def clean(self):
+        if not int(self.unit_type) > int(self.provider.unit_type):
+            raise ValidationError("Error in unit_type hierarchy. HINT: You can choose only the higher Unit as provider")
