@@ -28,7 +28,6 @@ DEBUG = int(config["DEBUG"])
 ALLOWED_HOSTS = config["DJANGO_ALLOWED_HOSTS"].split(" ")
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'coreapp.apps.CoreappConfig',
+    'User.apps.UserConfig',
     'drf_yasg',
 ]
 
@@ -86,6 +86,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'User.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
