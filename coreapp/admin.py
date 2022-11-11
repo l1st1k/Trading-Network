@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import *
 
@@ -9,11 +10,17 @@ debt_remove.short_description = 'Remove debt from Units'
 
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'provider', 'unit_type', 'debt', 'created_at')
+    list_display = ('name', 'email', 'provider_link', 'unit_type', 'debt', 'created_at')
     search_fields = ('name', 'email')
     list_editable = ('unit_type',)
     list_filter = ('unit_type', 'created_at', 'address__city')
     actions = (debt_remove,)
+
+    def provider_link(self, obj):
+        if obj.provider:
+            return mark_safe(f'<a href="/admin/coreapp/unit/{obj.provider.id}/change/">{obj.provider.name}</a>')
+
+    provider_link.short_description = 'provider'
 
 
 class ProductAdmin(admin.ModelAdmin):
