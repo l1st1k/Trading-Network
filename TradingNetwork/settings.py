@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'coreapp.apps.CoreappConfig',
     'User.apps.UserConfig',
     'drf_yasg',
+    'djmoney',
 ]
 
 MIDDLEWARE = [
@@ -110,6 +111,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Minsk'
+
+CURRENCIES = ('USD',)
 
 USE_I18N = True
 
