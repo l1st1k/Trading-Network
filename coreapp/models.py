@@ -55,7 +55,8 @@ class Unit(models.Model):
         related_name='members',
         blank=True
     )
-    unit_type = models.IntegerField(
+    unit_type = models.CharField(
+        max_length=2,
         choices=UnitType.choices,
         default=UnitType.FACTORY
     )
