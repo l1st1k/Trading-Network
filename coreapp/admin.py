@@ -3,11 +3,17 @@ from django.contrib import admin
 from .models import *
 
 
+def debt_remove(modeladmin, request, queryset):
+    queryset.update(debt=0)
+debt_remove.short_description = 'Remove debt from Units'
+
+
 class UnitAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'provider', 'unit_type', 'debt', 'created_at')
     search_fields = ('name', 'email')
     list_editable = ('unit_type',)
     list_filter = ('unit_type', 'created_at', 'address__city')
+    actions = (debt_remove,)
 
 
 class ProductAdmin(admin.ModelAdmin):

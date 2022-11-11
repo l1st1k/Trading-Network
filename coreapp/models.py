@@ -61,11 +61,10 @@ class Unit(models.Model):
         default=UnitType.FACTORY
     )
     debt = MoneyField(
+        default=0,
         max_digits=14,
         decimal_places=2,
-        default_currency='USD',
-        null=True,
-        blank=True
+        default_currency='USD'
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
