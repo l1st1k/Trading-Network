@@ -1,32 +1,29 @@
-from rest_framework import viewsets, mixins, permissions
+from rest_framework import viewsets, mixins
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from coreapp.models import Network
 from coreapp.serializers import *
 from coreapp.permissions import IsActive
+from coreapp.services import filtering_unit_queryset
 
 
 class NetworkViewSet(
     viewsets.GenericViewSet,
-    mixins.RetrieveModelMixin,
     mixins.ListModelMixin
 ):
-    """ViewSet for all Network objects"""
+    """Network objects listing"""
     queryset = Network.objects.all()
-    serializer_class = None
+    serializer_class = NetworkSerializer
+    # TODO permissions (IsActive,)
     permission_classes = ()
-    permissions_dict = {
-        # 'list': (IsActive,),
-        # 'retrieve': (IsActive,),
-    }
 
-    def get_permissions(self):
-        if self.action in self.permissions_dict:
-            perms = self.permissions_dict[self.action]
-        else:
-            perms = []
-        return [permission() for permission in perms]
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return NetworkSerializer
-        return NetworkShortSerializer
+class UnitAPIView(APIView):
+    def get(self, request):
+        # TODO swagger schema for query params
+        queryset = filtering_unit_queryset(
+            request,
+            Unit.objects.all()
+        )
+        response_data = UnitShortSerializer(queryset, many=True).data
+        return Response(response_data, status=200)
