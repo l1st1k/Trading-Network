@@ -1,5 +1,6 @@
 from django.db.models.query import QuerySet
-from coreapp.models import Unit, Product
+
+from coreapp.models import Product, Unit
 
 
 def filtering_unit_queryset(

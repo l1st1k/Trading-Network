@@ -1,9 +1,14 @@
-from rest_framework import viewsets, mixins
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from coreapp.serializers import *
+from coreapp.parameters import (country_parameter,
+                                high_debt_parameter,
+                                network_id_parameter,
+                                product_id_parameter)
 from coreapp.permissions import IsActive
+from coreapp.serializers import *
 from coreapp.services import filtering_unit_queryset
 
 
@@ -19,8 +24,15 @@ class NetworkViewSet(
 
 
 class UnitAPIView(APIView):
+    @swagger_auto_schema(
+        manual_parameters=[
+            network_id_parameter,
+            country_parameter,
+            product_id_parameter,
+            high_debt_parameter
+        ],
+    )
     def get(self, request):
-        # TODO swagger schema for query params
         queryset = filtering_unit_queryset(
             request,
             Unit.objects.all()

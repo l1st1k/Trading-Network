@@ -16,6 +16,7 @@ _Done as a job placement test task._
    - LocalStack (free local AWS)
    - Docker & docker-compose
    - Swagger _(for testing and reviewing all the endpoints)_
+   - Isort _(for sorting imports)_
 
 To start my application on your device you should:
 1) have docker-compose installed
