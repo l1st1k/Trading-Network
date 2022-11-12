@@ -2,6 +2,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+# AbstractUser class also had 'is_active' field
+# Just found it out =D
+# Anyway, I think it's more comfy to work with custom user class and better practice
 class User(AbstractUser):
     is_active = models.BooleanField(default=True)
 

@@ -23,7 +23,7 @@ urlpatterns = [
 
     # App urls
     path('api/v1/user/', include('User.urls')),
-    path('api/v1/units/', include('coreapp.urls')),
+    path('api/v1/', include('coreapp.urls')),
 
     # JWT token urls
     # path('api/v1/token/create/', CreateTokenView.as_view(), name='token_create'),
