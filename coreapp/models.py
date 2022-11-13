@@ -11,7 +11,7 @@ class Network(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=25, unique=True)
     model = models.CharField(max_length=30)
     release_date = models.DateTimeField(null=True, blank=True)
 
@@ -37,7 +37,7 @@ class Unit(models.Model):
         LARGE_RETAIL_CHAIN = 3
         INDIVIDUAL_ENTREPRENEUR = 4
 
-    name = models.CharField(max_length=80, unique=True)
+    name = models.CharField(max_length=50, unique=True)
     network = models.ForeignKey(
         'coreapp.Network',
         related_name='unit_network',
