@@ -1,3 +1,7 @@
+from datetime import timedelta
+
+from django.utils import timezone
+
 from rest_framework import serializers
 
 from coreapp.models import *
@@ -49,6 +53,16 @@ class UnitShortSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    def validate(self, data):
+        """
+        Check that the release_date is after the current time.
+        """
+        # Added 3h manually, because TZ from setting.py doesn't work right
+        now = timezone.now() + timedelta(hours=3)
+        if not data['release_date'] > now:
+            raise serializers.ValidationError("Incorrect release_date! release_date should be future.")
+        return data
+
     class Meta:
         model = Product
         fields = '__all__'
