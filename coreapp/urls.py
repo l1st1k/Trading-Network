@@ -1,12 +1,12 @@
-from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from .views import *
+from coreapp.views_network import NetworkViewSet
+from coreapp.views_product import ProductViewSet
+from coreapp.views_unit import UnitViewSet
 
 router = DefaultRouter()
 router.register(r'networks', NetworkViewSet, basename='network')
+router.register(r'units', UnitViewSet, basename='units')
+router.register(r'products', ProductViewSet, basename='products')
 
-urlpatterns = [
-    path('units/', UnitAPIView.as_view(), name='units'),
-]
-urlpatterns += router.urls
+urlpatterns = router.urls

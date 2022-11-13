@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import *
+from coreapp.models import *
 
 
 class NetworkSerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class NetworkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Network
-        fields = ('unit_amount', 'units')
+        fields = ('id', 'name', 'unit_amount', 'units')
 
     def get_unit_amount(self, obj):
         return Unit.objects.filter(network=obj).count()
@@ -25,6 +25,18 @@ class NetworkShortSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UnitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Unit
+        fields = '__all__'
+
+
+class UnitNoDebtSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Unit
+        exclude = ('debt', 'debt_currency')
+
+
 class UnitShortSerializer(serializers.ModelSerializer):
     provider = serializers.SerializerMethodField()
 
@@ -34,4 +46,9 @@ class UnitShortSerializer(serializers.ModelSerializer):
 
     def get_provider(self, obj):
         return obj.provider.name if obj.provider else None
-    
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
