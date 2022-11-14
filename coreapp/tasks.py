@@ -1,13 +1,12 @@
 from random import randint
-from typing import Callable
 
-from asgiref.sync import async_to_sync
 from celery import shared_task
 from django.db import transaction
 from djmoney.money import Money
 from TradingNetwork.celery import app
 
 from coreapp.models import Unit
+from coreapp.services import create_and_send_qr_to_email
 
 
 @shared_task
@@ -36,3 +35,8 @@ def celery_reduce_debt():
 def celery_remove_debt(ids: list[int]):
     with transaction.atomic():
         Unit.objects.filter(pk__in=ids).update(debt=0)
+
+
+@app.task()
+def celery_create_and_send_qr(email: str, data):
+    create_and_send_qr_to_email(email, data)

@@ -1,14 +1,17 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
+from User.models import User
 
 from coreapp.models import Unit
 from coreapp.parameters import (country_parameter, high_debt_parameter,
                                 network_id_parameter, product_id_parameter)
 from coreapp.permissions import IsActive, IsUnitMember
-from coreapp.serializers import (UnitNoDebtSerializer, UnitSerializer,
-                                 UnitShortSerializer)
+from coreapp.serializers import (UnitContactsSerializer, UnitNoDebtSerializer,
+                                 UnitSerializer, UnitShortSerializer)
 from coreapp.services import filtering_unit_queryset
+from coreapp.tasks import celery_create_and_send_qr
 
 
 class UnitViewSet(viewsets.ModelViewSet):
@@ -64,3 +67,16 @@ class UnitViewSet(viewsets.ModelViewSet):
         )
         response_data = UnitShortSerializer(queryset, many=True).data
         return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=('get',))
+    def qr(self, request, *args, **kwargs):
+        unit = self.get_object()
+        # TODO delete row after jwt
+        request.user = User.objects.get(id=1)
+        # Getting user contacts
+        data = UnitContactsSerializer(unit).data
+
+        # Creating QR-code and sending it to user email
+        celery_create_and_send_qr.delay(request.user.email, data)
+
+        return Response(f'QR-code successfully sent!', status=status.HTTP_200_OK)

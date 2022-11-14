@@ -51,6 +51,23 @@ class UnitShortSerializer(serializers.ModelSerializer):
         return obj.provider.name if obj.provider else None
 
 
+class UnitContactsSerializer(serializers.ModelSerializer):
+    address = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Unit
+        fields = ('name', 'email', 'address')
+
+    def get_address(self, obj):
+        return AddressSerializer(obj.address).data
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        exclude = ('id',)
+
+
 class ProductSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """
