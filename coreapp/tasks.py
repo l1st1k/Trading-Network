@@ -1,7 +1,9 @@
 from random import randint
+from typing import Callable
 
 from asgiref.sync import async_to_sync
 from celery import shared_task
+from django.db import transaction
 from djmoney.money import Money
 from TradingNetwork.celery import app
 
@@ -30,8 +32,7 @@ def celery_reduce_debt():
         unit.save()
 
 
-@app.task()
-def celery_remove_debt_async(queryset):
-    # Django ORM from version 4.1 supports async ORM requests
-    # TODO fix
-    async_to_sync(queryset.aupdate(debt=0))
+@app.task(ignore_result=True)
+def celery_remove_debt(ids: list[int]):
+    with transaction.atomic():
+        Unit.objects.filter(pk__in=ids).update(debt=0)
