@@ -3,13 +3,10 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 
 from coreapp.models import Unit
-from coreapp.parameters import (country_parameter,
-                                high_debt_parameter,
-                                network_id_parameter,
-                                product_id_parameter)
+from coreapp.parameters import (country_parameter, high_debt_parameter,
+                                network_id_parameter, product_id_parameter)
 from coreapp.permissions import IsActive, IsUnitMember
-from coreapp.serializers import (UnitNoDebtSerializer,
-                                 UnitSerializer,
+from coreapp.serializers import (UnitNoDebtSerializer, UnitSerializer,
                                  UnitShortSerializer)
 from coreapp.services import filtering_unit_queryset
 

@@ -1,11 +1,16 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import *
+from coreapp.models import *
+from coreapp.tasks import celery_remove_debt_async
 
 
 def debt_remove(modeladmin, request, queryset):
-    queryset.update(debt=0)
+    # TODO 20 instead of 2
+    if len(queryset) > 2:
+        celery_remove_debt_async(queryset)
+    else:
+        queryset.update(debt=0)
 
 
 debt_remove.short_description = 'Remove debt from Units'
