@@ -1,9 +1,13 @@
+from random import randint
+
 import boto3
 import qrcode
 from django.db.models.query import QuerySet
+from djmoney.money import Money
 from dotenv import dotenv_values
 
-from coreapp.models import Product, Unit
+from User.models import User
+from coreapp.models import Product, Unit, Network, Address
 
 config = dotenv_values("/usr/src/app/.env")
 SES_ENDPOINT = config["SES_ENDPOINT"]
@@ -17,7 +21,6 @@ def filtering_unit_queryset(
         request,
         queryset
 ) -> 'QuerySet[Unit]':
-
     # Filter for certain network
     if request.GET.get('network_id', None):
         queryset = queryset.filter(network__id=request.GET['network_id'])
@@ -79,3 +82,40 @@ def create_and_send_qr_to_email(email: str, data):
         },
         Source=MAIL_SENDER
     )
+
+
+def fill_db() -> None:
+    nonactive_user = User.objects.create(
+        username='nonactive_user',
+        password='112233',
+        is_active=False,
+        email='nonactive_user@mail.ru'
+    )
+    num_of_networks = 6
+    just_int = 999
+    for net in range(num_of_networks):
+        network = Network.objects.create(name='TestNetwork' + str(net + 1))
+        provider = None
+        for unit in range(5):
+            product = Product.objects.create(
+                name='TestProduct' + str(just_int),
+                model='TestModel'
+            )
+            address = Address.objects.create(
+                country='TestCountry' + str(unit),
+                city='TestCity',
+                street='TestStreet',
+                house_number=just_int - 900
+            )
+            rand_debt = Money(randint(100, 10000), currency='USD')
+            unit = Unit.objects.create(
+                name='TestUnit' + str(just_int),
+                network=network,
+                email='test_email@gmail.com',
+                address=address,
+                unit_type=unit,
+                provider=provider,
+                debt=rand_debt
+            )
+            provider = unit
+            just_int -= 1

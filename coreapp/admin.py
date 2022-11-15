@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from coreapp.models import *
@@ -22,9 +23,31 @@ debt_remove.short_description = 'Remove debt from Units'
 
 class UnitAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'network', 'provider_link', 'unit_type', 'debt', 'created_at')
+    # list_display = ('name', 'email_link', 'network', 'provider_link', 'unit_type', 'debt', 'created_at')
     search_fields = ('name', 'email')
     list_filter = ('unit_type', 'created_at', 'address__city', 'network')
     actions = (debt_remove,)
+
+    # class Media:
+    #     js = ("js/script.js",)
+    #
+    # def email_link(self, obj):
+    #     html_for_email_button = \
+    #         """
+    #             <html>
+    #                 <head>
+    #                     <meta charset="utf-8">
+    #                     <base href="/">
+    #                     <script src=coreapp/static/js/script.js></script>
+    #                 </head>
+    #                 <body>
+    #                     <button onclick={{()=>copyContent('{}');}}>{}</button>
+    #                 </body>
+    #             </html>
+    #         """
+    #     return format_html(html_for_email_button, obj.email, obj.email)
+    #
+    # email_link.short_description = 'email'
 
     def provider_link(self, obj):
         if obj.provider:
