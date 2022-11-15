@@ -8,7 +8,11 @@ from coreapp.tasks import celery_remove_debt
 def debt_remove(modeladmin, request, queryset):
     if len(queryset) > 20:
         pks = queryset.values_list('pk', flat=True)
-        celery_remove_debt.delay(pks)
+        # TODO add .delay (celery)
+        # Should be with '.delay', as below, but for now it removed for test needs.
+        # p.s. haven't separated celery worker
+        # celery_remove_debt.delay(pks)
+        celery_remove_debt(pks)
     else:
         queryset.update(debt=0)
 

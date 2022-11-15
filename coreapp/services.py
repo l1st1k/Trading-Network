@@ -79,5 +79,3 @@ def create_and_send_qr_to_email(email: str, data):
         },
         Source=MAIL_SENDER
     )
-    # TODO fix SES client connection
-    # http://localhost.localstack.cloud:4566/

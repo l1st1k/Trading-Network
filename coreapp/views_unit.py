@@ -2,7 +2,6 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from User.models import User
 
 from coreapp.models import Unit
 from coreapp.parameters import (country_parameter, high_debt_parameter,
@@ -27,6 +26,7 @@ class UnitViewSet(viewsets.ModelViewSet):
         'partial_update': (IsActive, IsUnitMember),
         'update': (IsActive, IsUnitMember),
         'destroy': (IsActive, IsUnitMember),
+        'qr': (IsActive, IsUnitMember),
     }
 
     # a method that set permissions depending on http request methods
@@ -78,6 +78,10 @@ class UnitViewSet(viewsets.ModelViewSet):
         data = UnitContactsSerializer(unit).data
 
         # Creating QR-code and sending it to user email
-        celery_create_and_send_qr.delay(request.user.email, data)
+        # TODO add .delay (celery)
+        # Should be with '.delay', as below, but for now it removed for test needs.
+        # p.s. haven't separated celery worker
+        # celery_create_and_send_qr.delay(request.user.email, data)
+        celery_create_and_send_qr(request.user.email, data)
 
         return Response(f'QR-code successfully sent!', status=status.HTTP_200_OK)
