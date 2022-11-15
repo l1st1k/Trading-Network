@@ -71,8 +71,7 @@ class UnitViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=('get',))
     def qr(self, request, *args, **kwargs):
         unit = self.get_object()
-        # TODO delete row after jwt
-        request.user = User.objects.get(id=1)
+
         # Getting user contacts
         data = UnitContactsSerializer(unit).data
 
