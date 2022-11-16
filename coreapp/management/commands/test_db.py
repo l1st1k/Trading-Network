@@ -1,6 +1,5 @@
-from django.core.management.base import BaseCommand
-
 from coreapp.services import fill_db
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):

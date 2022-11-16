@@ -1,4 +1,4 @@
-from rest_framework import renderers, parsers, permissions, status
+from rest_framework import parsers, permissions, renderers, status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response

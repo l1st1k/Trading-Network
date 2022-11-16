@@ -5,9 +5,9 @@ import qrcode
 from django.db.models.query import QuerySet
 from djmoney.money import Money
 from dotenv import dotenv_values
-
 from User.models import User
-from coreapp.models import Product, Unit, Network, Address
+
+from coreapp.models import Address, Network, Product, Unit
 
 config = dotenv_values("/usr/src/app/.env")
 SES_ENDPOINT = config["SES_ENDPOINT"]

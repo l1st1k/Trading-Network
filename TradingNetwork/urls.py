@@ -3,8 +3,7 @@ from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
-from User.views import RefreshTokenView, CreateTokenView
+from User.views import CreateTokenView, RefreshTokenView
 
 schema_view = get_schema_view(
    openapi.Info(

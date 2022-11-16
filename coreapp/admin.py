@@ -20,7 +20,7 @@ def debt_remove(modeladmin, request, queryset):
 
 debt_remove.short_description = 'Remove debt from Units'
 
-
+# TODO JS Button
 class UnitAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'network', 'provider_link', 'unit_type', 'debt', 'created_at')
     # list_display = ('name', 'email_link', 'network', 'provider_link', 'unit_type', 'debt', 'created_at')
@@ -41,7 +41,7 @@ class UnitAdmin(admin.ModelAdmin):
     #                     <script src=coreapp/static/js/script.js></script>
     #                 </head>
     #                 <body>
-    #                     <button onclick={{()=>copyContent('{}');}}>{}</button>
+    #                     <button onclick= "()=>copyContent(\'{}\');">{}</button>
     #                 </body>
     #             </html>
     #         """
