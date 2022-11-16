@@ -1,4 +1,4 @@
-FROM python:3.9-alpine3.15
+FROM python:3.9
 
 # set work directory
 WORKDIR /usr/src/app
@@ -7,7 +7,8 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-#RUN apk add --update netcat
+RUN apt-get update \
+    && apt-get install -y netcat
 
 EXPOSE 8000
 
